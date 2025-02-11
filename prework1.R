@@ -162,7 +162,7 @@ fes_scores_df <- rbind(
 )
 
 
-
+#Graphs
 # Career Growth & Post-Fellowship Oppoetunities
 # short labels for the questions
 career_growth_plot_df$Short_Question <- c(
@@ -171,13 +171,13 @@ career_growth_plot_df$Short_Question <- c(
 )
 
 # custom colors
-custom_colors <- c("#3498db", "#e74c3c")  # TFI-themed distinct colors
+custom_colors <- c("#3498db", "#e74c3c")
 
 # bar chart
 ggplot(career_growth_plot_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Short_Question)) +
-  geom_col(show.legend = FALSE) +  # Hide legend since colors are intuitive
-  coord_flip() +  # Flip for better readability
-  scale_fill_manual(values = custom_colors) +  # Use distinct colors
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  scale_fill_manual(values = custom_colors) +
   labs(
     title = "Career Growth & Post-Fellowship Opportunities",
     x = "Question",
@@ -221,7 +221,7 @@ ggplot(organizational_engagement_df, aes(x = reorder(Short_Question, Score), y =
 
 # Resource and Ecosystem Support
 # Shorten question labels
-leadership_support_df$Short_Question <- c(
+resources_ecosystem_df$Short_Question <- c(
   "Community Support",
   "School Support"
 )
@@ -230,7 +230,7 @@ leadership_support_df$Short_Question <- c(
 resources_custom_colors <- c("#3498db", "#e74c3c")
 
 # Create bar chart
-ggplot(leadership_support_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Short_Question)) +
+ggplot(resources_ecosystem_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Short_Question)) +
   geom_col(show.legend = FALSE) +
   coord_flip() +
   scale_fill_manual(values = resources_custom_colors) +
@@ -247,8 +247,70 @@ ggplot(leadership_support_df, aes(x = reorder(Short_Question, Score), y = Score,
   )
 
 
+# Beautified Graphs -------------------------------------------------------
 
+# Career Growth & Post-Fellowship Oppoetunities
+ggplot(career_growth_plot_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Score)) +
+  geom_col(show.legend = FALSE, width = 0.6, color = "black", size = 0.3) +
+  geom_text(aes(label = round(Score, 2)), hjust = -0.2, size = 5, fontface = "bold", color = "black") +
+  coord_flip() +
+  scale_fill_gradient(low = "#D55E00", high = "#0072B2") +  # Gradient color
+  labs(
+    title = "📈 Career Growth & Post-Fellowship Opportunities",
+    x = NULL,
+    y = "Average Score"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.background = element_rect(fill = "grey92", color = NA),  # Overall Grey Background
+    panel.background = element_rect(fill = "grey80", color = NA),  # Grey Axis Area
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 18, color = "#222222", margin = margin(b = 10)),
+    axis.text.y = element_text(face = "bold", size = 12, color = "#444444"),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
 
+# Resources & Ecosystem Support 
+ggplot(resources_ecosystem_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Score)) +
+  geom_col(show.legend = FALSE, width = 0.6, color = "black", size = 0.3) +
+  geom_text(aes(label = round(Score, 2)), hjust = -0.2, size = 5, fontface = "bold", color = "black") +
+  coord_flip() +
+  scale_fill_gradient(low = "#D55E00", high = "#0072B2") +  # Gradient color
+  labs(
+    title = "🌍 Resources & Ecosystem Support",
+    x = NULL,
+    y = "Average Score"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.background = element_rect(fill = "grey92", color = NA),  # Overall Grey Background
+    panel.background = element_rect(fill = "grey80", color = NA),  # Grey Axis Area
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 18, color = "#222222", margin = margin(b = 10)),
+    axis.text.y = element_text(face = "bold", size = 12, color = "#444444"),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+# Organizational Engagement & Morale
+ggplot(organizational_engagement_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Score)) +
+  geom_col(show.legend = FALSE, width = 0.6, color = "black", size = 0.3) +
+  geom_text(aes(label = round(Score, 2)), hjust = -0.2, size = 5, fontface = "bold", color = "black") +
+  coord_flip() +
+  scale_fill_gradient(low = "#D55E00", high = "#0072B2") +  # Gradient color
+  labs(
+    title = "🏢 Organizational Engagement & Morale",
+    x = NULL,
+    y = "Average Score"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.background = element_rect(fill = "grey92", color = NA),  # Overall Grey Background
+    panel.background = element_rect(fill = "grey80", color = NA),  # Grey Axis Area
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 18, color = "#222222", margin = margin(b = 10)),
+    axis.text.y = element_text(face = "bold", size = 12, color = "#444444"),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
 
 
 
