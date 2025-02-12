@@ -1,3 +1,4 @@
+#libraries
 library(readr)
 library(tidyverse)
 
@@ -26,7 +27,7 @@ likert_mapping <- c("Strongly Disagree" = 1,
                     "na" = NA)
 
 
-likert_columns <- names(data_delhi)[5:length(data_delhi)]  # Assuming first 4 columns are non-Likert
+likert_columns <- names(data_delhi)[5:length(data_delhi)]  # bar first 4 columns
 
 
 data_delhi[likert_columns] <- lapply(data_delhi[likert_columns], function(x) likert_mapping[x])
@@ -37,7 +38,7 @@ data_delhi[is.na(data_delhi)] <- 0
 # Meta Analysis ------------------------------------------------
 
 
-# Define column groups based on the categories
+# categorizing columns
 leadership_support <- c("My.PM.consistently.shares.helpful.and.timely.feedback.on.my.development.as.a.teacher.and.leader.with.me",
                         "My.PM.helps.me.identify.opportunities.within.and.beyond.TFI.that.will.aid.my.development.as.a.leader",
                         "My.PM.is.an.effective.mentor.to.me",
@@ -56,7 +57,7 @@ organizational_engagement <- c("I.feel.my.work..when.worthy..is.aptly.recognised
 safety_work_env <- c("I.feel.safe.working.in.my.placement.school",
                      "I.feel.safe.in.the.community.in.which.in.my.placement.school.is.located")
 
-# Compute mean scores for each category
+# mean scores for each category (bit redundant)
 category_scores <- data.frame(
   Category = c("Leadership & Support", "Resources & Ecosystem Support", 
                "Career Growth & Post-Fellowship Opportunities", 
@@ -70,15 +71,15 @@ category_scores <- data.frame(
   )
 )
 
-# Sort categories by lowest scores (biggest challenges)
+# sorting categories by lowest scores (biggest challenges)
 category_scores <- category_scores %>% arrange(Average_Score)
 
-# Print the results
+# testing code
 print(category_scores)
 
 #Graphs
 
-# Create the bar plot with gradient fill
+# bar plot with gradient fill
 ggplot(category_scores, aes(x = reorder(Category, Average_Score), y = Average_Score, fill = Average_Score)) +
   geom_bar(stat = "identity", width = 0.6) +
   coord_flip() +  # Horizontal bar chart for better readability
@@ -152,7 +153,7 @@ safety_work_env_df <- data.frame(
   Category = "Safety & Work Environment"
 )
 
-# Combine all into one data frame
+# all into one data frame (redundant?)
 fes_scores_df <- rbind(
   leadership_support_df,
   resources_ecosystem_df,
@@ -163,14 +164,14 @@ fes_scores_df <- rbind(
 
 
 #Graphs
-# Career Growth & Post-Fellowship Oppoetunities
-# short labels for the questions
+# Career Growth & Post-Fellowship opportunities
+# shortening labels for the questions
 career_growth_plot_df$Short_Question <- c(
   "Access to Career Support",
   "Exciting Career Options"
 )
 
-# custom colors
+# custom colors (for easy do overs)
 custom_colors <- c("#3498db", "#e74c3c")
 
 # bar chart
@@ -191,7 +192,7 @@ ggplot(career_growth_plot_df, aes(x = reorder(Short_Question, Score), y = Score,
   )
 
 # Organisational Engagement & Morale
-# Shorten question labels
+# Shortening question labels
 organizational_engagement_df$Short_Question <- c(
   "Work Recognition",
   "Views Considered",
@@ -199,7 +200,7 @@ organizational_engagement_df$Short_Question <- c(
 )
 
 #  custom colors
-org_custom_colors <- c("#3498db", "#e74c3c", "#9b59b6")  # Green, Orange, Purple
+org_custom_colors <- c("#3498db", "#e74c3c", "#9b59b6") 
 
 # bar chart
 ggplot(organizational_engagement_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Short_Question)) +
@@ -249,7 +250,7 @@ ggplot(resources_ecosystem_df, aes(x = reorder(Short_Question, Score), y = Score
 
 # Beautified Graphs -------------------------------------------------------
 
-# Career Growth & Post-Fellowship Oppoetunities
+# Career Growth & Post-Fellowship opportunities
 ggplot(career_growth_plot_df, aes(x = reorder(Short_Question, Score), y = Score, fill = Score)) +
   geom_col(show.legend = FALSE, width = 0.6, color = "black", size = 0.3) +
   geom_text(aes(label = round(Score, 2)), hjust = -0.2, size = 5, fontface = "bold", color = "black") +
