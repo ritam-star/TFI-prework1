@@ -35,29 +35,28 @@ survey_data <- survey_data %>%
 
                                                                       #ANALYSIS#
 # decline reasons 
-reason_counts <- survey_data %>%
-  select(contains("reason")) %>%
+reason_decline_counts <- survey_data %>%
+  select(contains("reason_decline")) %>%
   pivot_longer(cols = everything(), names_to = "Reason", values_to = "Response") %>%
   filter(!is.na(Response)) %>%
   count(Response, sort = TRUE)
 
 # checking results
-print(reason_counts) #checks out
+print(reason_decline_counts) #checks out
 
 #VISUALIZATION
 
 # calculating top 5 reasons
-top_5_reasons <- reason_counts %>%
+top_5_decline_reasons <- reason_decline_counts %>%
   top_n(5, n) %>%
   mutate(percentage = round(n / sum(n) * 100, 1))
 
 # plotting pie chart
-ggplot(top_5_reasons, aes(x = "", y = n, fill = Response)) +
+ggplot(top_5_decline_reasons, aes(x = "", y = n, fill = Response)) +
   geom_bar(stat = "identity", width = 1) +
   coord_polar(theta = "y") +  # Convert to pie chart
   geom_text(aes(label = paste0(percentage, "%")), 
-            position = position_stack(vjust = 0.5), size = 5) +  # Add percentage labels
-  labs(
+            position = position_stack(vjust = 0.5), size = 5) + 
     title = "Top 5 Reasons for Declining the Offer",
     x = NULL,
     y = NULL,
@@ -75,6 +74,48 @@ ggplot(top_5_reasons, aes(x = "", y = n, fill = Response)) +
     legend.text = element_text(size = 10)
   )
 
+
+
+# decline alternative reasons 
+reason_alternative_counts <- survey_data %>%
+  select(contains("reason_alternative")) %>%
+  pivot_longer(cols = everything(), names_to = "Reason", values_to = "Response") %>%
+  filter(!is.na(Response)) %>%
+  count(Response, sort = TRUE)
+
+# checking results
+print(reason_alternative_counts) #checks out
+
+#VISUALIZATION
+
+# calculating top 5 reasons
+top_5_alternative_reasons <- reason_alternative_counts %>%
+  top_n(5, n) %>%
+  mutate(percentage = round(n / sum(n) * 100, 1))
+
+# plotting pie chart
+ggplot(top_5_alternative_reasons, aes(x = "", y = n, fill = Response)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar(theta = "y") +  # Convert to pie chart
+  geom_text(aes(label = paste0(percentage, "%")), 
+            position = position_stack(vjust = 0.5), size = 5) + 
+  labs(
+    title = "Top 5 Alternatives Instead of Fellowship",
+    x = NULL,
+    y = NULL,
+    fill = "Reason"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    #plot.background = element_rect(fill = "grey92", color = NA), #removed here, looks bad
+    panel.background = element_rect(fill = "grey80", color = NA),  #grey box around circle
+    plot.title = element_text(face = "bold", hjust = 0.5, size = 18, color = "#222222", margin = margin(b = 10)),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),  
+    panel.grid = element_blank(),
+    legend.title = element_text(face = "bold", size = 12),
+    legend.text = element_text(size = 10)
+  )
 
 
 
@@ -109,10 +150,10 @@ print(webinar_analysis) #checks out
 #graphs
 plot_recruitment <- function(data, title) {
   ggplot(data, aes(x = reorder(Response, Count), y = Count, fill = Count)) +
-    geom_col(show.legend = FALSE, width = 0.6, color = "black", linewidth = 0.3) +  # Black border for contrast
-    geom_text(aes(label = Count), hjust = -0.2, size = 5, fontface = "bold", color = "black") +  # Labels outside bars
+    geom_col(show.legend = FALSE, width = 0.6, color = "black", linewidth = 0.3) + 
+    geom_text(aes(label = Count), hjust = -0.2, size = 5, fontface = "bold", color = "black") +  
     coord_flip() +
-    scale_fill_gradient(low = "#D55E00", high = "#0072B2") +  # Gradient fill
+    scale_fill_gradient(low = "#D55E00", high = "#0072B2") + 
     labs(
       title = title,
       x = NULL,
